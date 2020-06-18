@@ -110,7 +110,13 @@ class Item(models.Model):
     .......
 #views.py
     items = Item.objects.all()
-    category_1 = items.filter(category='category_1')
+    items = items.filter(category='category_1')
+    context = { 
+                'items':items, 
+                ...... 
+                }
+
+	return render(request, 'pages/dashboard.html', context)
 
 
 # As a user, I want to create new item manually via a form.
