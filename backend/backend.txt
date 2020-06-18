@@ -1,0 +1,164 @@
+# As a developer, I want to run a command which help me to setup database easily with one run.
+# settings.py
+DATABASES = {
+    'default': {},
+    'users': {
+        'NAME': 'user_data',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'mysql_user',
+        'PASSWORD': 'superS3cret'
+    },
+    'customers': {
+        'NAME': 'customer_data',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'mysql_cust',
+        'PASSWORD': 'veryPriv@ate'
+    }
+}
+$ ./manage.py migrate
+$ ./manage.py migrate --database=customers
+
+# As a developer, I want to run a command which accepts the feed urls (separated by comma) as argument to grab items from given urls. Duplicate items are accepted.
+
+def splitstring(a):
+    result = a.split(",")
+    return result
+x=splitstring(input)
+for loop to input result after split to database 
+
+test in shell script
+$ ./manage.py shell
+
+>>input='''https://zingnews.vn/,https://www.youtube.com/,https://mp3.zing.vn/bai-hat/Moon-Lover-Various-Artists/ZW6ZZC66.html,https://www.linkedin.com/feed/,https://www.linkedin.com/feed/,
+https://mail.google.com/mail/u/0/,https://mail.google.com/mail/u/0/,'''
+>>def splitstring(a):
+    result = a.split(",")
+    return result
+>>x=splitstring(input)
+>>print(x)
+>>from django.db import models
+
+#models.py
+class Item(models.Model):
+    Item = models.CharField(max_length=100, primary_key=True)
+    ....
+
+>>> from .models import Item
+>>> i1=Item(Item=x[0]...)
+>>> i1.save()
+
+# As a developer, I want to see output of the command not only in shell but also in pre-defined log file. The log file should be defined as a parameter of the application.
+#settings.py
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/path/to/django/debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+#views.py
+
+import logging
+logger = logging.getLogger(__name__)
+def contact(request):
+    ...
+    logger.debug('Log whatever you want')
+    # It will we logged in '/path/to/django/debug.log' the path you have specified in settings.py logging conf
+
+# As a user, I want to see the list of items which were grabbed by running the command line above, via web-based.
+#models.py
+class Item(models.Model):
+    Item = models.CharField(max_length=100, primary_key=True)
+    ....
+
+>>>from .models import *
+>>>items = Item.objects.all()
+>>>items
+[<Item:item1>,<Item:item2>,....]
+
+# I also should see the pagination if there are more than one page. The page size is a configurable value.
+from django.core.paginator import Paginator
+
+    items = Item.objects.all()
+    paginator=Paginator(items,5) # 5 is configurable value
+	page=request.GET.get('page') #?page=2
+	orders=paginator.get_page(page)
+
+    context = { 
+                'items':items, 
+                ...... 
+                }
+
+	return render(request, 'pages/dashboard.html', context)
+# As a user, I want to filter items by category name on list of items.
+
+#models.py
+class Item(models.Model):
+    Item = models.CharField(max_length=100, primary_key=True)
+    Category = models.CharField(max_length=100)
+    .......
+#views.py
+    items = Item.objects.all()
+    category_1 = items.filter(category='category_1')
+
+
+# As a user, I want to create new item manually via a form.
+#forms.py
+from django.forms import ModelForm
+from .models import Item
+
+
+class ItemForm(ModelForm):
+	class Meta:
+		model = Item
+		fields = '__all__'
+
+#views.py
+from .forms import ItemForm
+def createItem(request):
+	form = ItemForm()
+	if request.method == 'POST':
+		#print('Printing POST:', request.POST)
+		form = ItemForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('/')
+
+	context = {'form':form}
+	return render(request, 'pages/item_form.html', context)
+
+
+# As a user, I want to update/delete an item
+def updateItem(request, pk):
+
+	item = Item.objects.get(id=pk)
+	form = ItemForm(instance=item)
+
+	if request.method == 'POST':
+		form = ItemForm(request.POST, instance=item)
+		if form.is_valid():
+			form.save()
+			return redirect('/')
+
+	context = {'form':form}
+	return render(request, 'pages/item_form.html', context)
+
+def deleteItem(request, pk):
+	item = Item.objects.get(id=pk)
+	if request.method == "POST":
+		order.delete()
+		return redirect('/')
+
+	context = {'item':item}
+	return render(request, 'pages/delete.html', context)
