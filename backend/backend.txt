@@ -79,7 +79,7 @@ def contact(request):
 # As a user, I want to see the list of items which were grabbed by running the command line above, via web-based.
 #models.py
 class Item(models.Model):
-    Item = models.CharField(max_length=100, primary_key=True)
+    Item = models.CharField(max_length=100)
     ....
 
 >>>from .models import *
@@ -105,7 +105,7 @@ from django.core.paginator import Paginator
 
 #models.py
 class Item(models.Model):
-    Item = models.CharField(max_length=100, primary_key=True)
+    Item = models.CharField(max_length=100)
     Category = models.CharField(max_length=100)
     .......
 #views.py
