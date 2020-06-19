@@ -9,10 +9,12 @@
 				<div class="card card-body">
 					<h5>Products</h5>
 				</div>
+				<br>
+				<br>
 				<form method="GET" action=".">
 				<div class="form-row">
 					<div class="form-group col-md-6">
-						<label for="inputState">Product</label>
+						<label for="inputState">Product:</label>
 						<select id="inputState" class="form-control" name="product">
 							<option selected>Choose...</option>
 							{% for pro in products %}
@@ -21,7 +23,7 @@
 						</select>
 					</div>
 					<div class="form-group col-md-6">
-						<label for="inputState">Product</label>
+						<label for="inputState">Category:</label>
 						<select id="inputState" class="form-control" name="category">
 							<option selected>Choose...</option>
 							<option value="Indoor">Indoor</option>
