@@ -39,6 +39,7 @@ def products(request):
 	if is_valid_queryparam(product) and product != 'Choose...':
 		products = products.filter(name__icontains=product)
 	number=products.count()
+
 	return render(request, 'pages/products.html', {'n' : number,'products':products})
 
 def customer(request, pk_test):
