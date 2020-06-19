@@ -49,7 +49,7 @@ https://mail.google.com/mail/u/0/,https://mail.google.com/mail/u/0/,'''
 
 #models.py
 class Item(models.Model):
-    Item = models.CharField(max_length=100, primary_key=True)
+    Item = models.CharField(max_length=100)
     ....
 
 >>> from .models import Item
