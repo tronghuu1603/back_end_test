@@ -35,9 +35,13 @@ def is_valid_queryparam(param):
 def products(request):
 	products = Product.objects.all()
 	product = request.GET.get('product')
+	category = request.GET.get('category')
 
 	if is_valid_queryparam(product) and product != 'Choose...':
 		products = products.filter(name__icontains=product)
+	if is_valid_queryparam(category) and category != 'Choose...':
+		products = products.filter(category__icontains=category)
+
 	number=products.count()
 
 	return render(request, 'pages/products.html', {'n' : number,'products':products})
