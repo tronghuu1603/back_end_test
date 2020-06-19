@@ -79,13 +79,15 @@ def contact(request):
     # It will we logged in '/path/to/django/debug.log' the path you have specified in settings.py logging conf
 
 
-Write file in file 
-def handle_uploaded_file(f):
+Write file  
+def handle_write_file(f):
     with open('some/file/name.txt', 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
+        for result in f.chunks():
+            destination.write(result)
+input data or result want to write
+f=result
+handle_write_file(f)
 
-            
 # As a user, I want to see the list of items which were grabbed by running the command line above, via web-based.
 #models.py
 class Item(models.Model):
