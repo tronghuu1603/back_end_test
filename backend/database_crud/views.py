@@ -29,11 +29,17 @@ def home(request):
                 }
 
 	return render(request, 'pages/dashboard.html', context)
+def is_valid_queryparam(param):
+    return param!="" and param is not None
 
 def products(request):
 	products = Product.objects.all()
+	product = request.GET.get('product')
 
-	return render(request, 'pages/products.html', {'products':products})
+	if is_valid_queryparam(product) and product != 'Choose...':
+		products = products.filter(Product__Product=product)
+	number=products.count()
+	return render(request, 'pages/products.html', {'n' : number,'products':products})
 
 def customer(request, pk_test):
 	customer = Customer.objects.get(id=pk_test)
