@@ -26,6 +26,14 @@ def splitstring(a):
 x=splitstring(input)
 for loop to input result after split to database 
 
+from django.db import transaction
+
+def insertfunction(request):
+    with transaction.commit_on_success():
+        for item in items:
+            entry = Entry(a1=item.a1, a2=item.a2)
+            entry.save()
+
 test in shell script
 $ ./manage.py shell
 
