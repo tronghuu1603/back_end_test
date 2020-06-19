@@ -49,6 +49,12 @@ class Order(models.Model):
 	def __str__(self):
 		return self.product.name
 
+class URL_input(models.Model):
+	url_input = models.CharField(max_length=200, null=True, blank=True)
+	description = models.CharField(max_length=200, null=True, blank=True)
+
+	def __str__(self):
+		return self.url_input
 
 
 	
