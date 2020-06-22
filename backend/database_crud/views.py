@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 
 
 def home(request):
-	orders = Order.objects.all()
+	orders = Order.objects.all().order_by('-id')
 	customers = Customer.objects.all()
 
 	total_customers = customers.count()
@@ -76,10 +76,10 @@ def createOrder(request):
     	# 		form.save()
 		# 	return redirect('/')
 		if form.is_valid():
+			form.save()
 			with open( 'file_test.txt', 'a+')as f:
 				f.write("ok \n")
-				return FileResponse(f, as_attachment=True, filename='some_file.txt')
-			form.save()
+				return FileResponse(f, as_attachment=True, filename='file_test.txt')
 			return redirect('/')
 
 	context = {'form':form}
