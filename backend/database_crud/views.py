@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect 
-from django.http import HttpResponse, request
-# Create your views here.
+from django.http import HttpResponse, request, FileResponse# Create your views here.
 from .models import *
 from .forms import OrderForm,CustomerForm
 from django.core.paginator import Paginator
@@ -73,6 +72,10 @@ def createOrder(request):
 	if request.method == 'POST':
 		#print('Printing POST:', request.POST)
 		form = OrderForm(request.POST)
+		if form.is_valid():
+			with open( 'file_test.txt', 'a+')as f:
+				f.write("text")
+				return FileResponse(f, as_attachment=True, filename='some_file.txt')
 		if form.is_valid():
 			form.save()
 			return redirect('/')
