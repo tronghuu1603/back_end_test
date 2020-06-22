@@ -72,11 +72,13 @@ def createOrder(request):
 	if request.method == 'POST':
 		#print('Printing POST:', request.POST)
 		form = OrderForm(request.POST)
+		# if form.is_valid():
+    	# 		form.save()
+		# 	return redirect('/')
 		if form.is_valid():
 			with open( 'file_test.txt', 'a+')as f:
-				f.write("text")
+				f.write("ok \n")
 				return FileResponse(f, as_attachment=True, filename='some_file.txt')
-		if form.is_valid():
 			form.save()
 			return redirect('/')
 
